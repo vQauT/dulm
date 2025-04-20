@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>I knew it!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Cute+Font&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #ffdbe5;
+      font-family: 'Cute Font', cursive;
+      text-align: center;
+      padding: 50px 20px;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    img {
+      width: 250px;
+      max-width: 100%;
+      margin-bottom: 30px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #333;
+    }
+
+    .input-area {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    textarea {
+      padding: 10px;
+      font-size: 1.1rem;
+      border-radius: 10px;
+      border: none;
+      resize: none;
+    }
+
+    button {
+      padding: 10px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 25px;
+      background-color: #ff5e78;
+      color: white;
+      cursor: pointer;
+    }
+
+    @media (max-width: 500px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      textarea {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExcXF2OHg4OHRqdmdhYmdma2F5eWp4OHNyeXA0b3Q4NHFtZ2hnZDR6aCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/1JmGiBtqTuehfYxuy9/giphy.gif" alt="hug" />
+  <h1>I knew it <span style="color: #ff4d6d;">🥰</span>!</h1>
+
+  <div class="input-area" id="inputArea">
+    <textarea id="message" rows="4" placeholder="Type Your Feelegs Here..."></textarea>
+    <button onclick="sendMessage()">Send 🤍</button>
+  </div>
+
+  <script>
+    const webhookUrl = "https://discord.com/api/webhooks/1363072803309355060/2Tz30tU1_gLRUDudDg40eIhsBNxIjxkryO-YwdQ3Qrkq_nAtwF9CSTiLcEUWxhrj5D23"; // 👈 غيّره لرابط Webhook الخاص بك
+
+    if (localStorage.getItem("sentMessage") === "true") {
+      document.getElementById("inputArea").style.display = "none";
+    }
+
+    function sendMessage() {
+      const message = document.getElementById("message").value.trim();
+      if (!message) return alert("Message Empty!");
+
+      const confirmSend = confirm("⚠️ After sending, you will not be able to send another message.\nAre you sure?");
+
+      if (!confirmSend) return;
+
+      fetch(webhookUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          content: message
+        })
+      })
+      .then(res => {
+        if (res.ok) {
+          localStorage.setItem("sentMessage", "true");
+          document.getElementById("inputArea").style.display = "none";
+        } else {
+          alert("Err : Cant Send Message!");
+        }
+      })
+      .catch(() => alert("فشل في الاتصال بالويب هوك!"));
+    }
+  </script>
+</body>
+</html>

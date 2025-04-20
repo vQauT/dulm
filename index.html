@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Do you love me?</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Cute+Font&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #ffdbe5;
+      font-family: 'Cute Font', cursive;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    img {
+      width: 200px;
+      max-width: 80vw;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #333;
+    }
+
+    .buttons {
+      margin-top: 40px;
+      position: relative;
+      width: 100%;
+      height: 300px; /* مساحة واسعة للحركة */
+      max-width: 600px;
+    }
+
+    #yesBtn, #noBtn {
+      padding: 12px 30px;
+      font-size: 1.3rem;
+      border: none;
+      border-radius: 30px;
+      background-color: #ff5e78;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    #yesBtn {
+      position: absolute;
+      left: 30%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+    }
+
+    #noBtn {
+      position: absolute;
+      left: 70%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .buttons {
+        height: 250px;
+      }
+
+      #yesBtn, #noBtn {
+        padding: 10px 20px;
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExeHVxcXRxNzlxYWEzZjllM2Z0MTJ0bzFqN2FxdjhkaGN4cXA3bjZmYiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/KztT2c4u8mYYUiMKdJ/giphy.gif" alt="cute" />
+  <h1>Do you love me?</h1>
+
+  <div class="buttons">
+    <button id="yesBtn" onclick="yes()">Yes</button>
+    <button id="noBtn">No</button>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById('noBtn');
+    const yesBtn = document.getElementById('yesBtn');
+    const container = document.querySelector('.buttons');
+  
+    function getSafeRandomPosition() {
+      const yesRect = yesBtn.getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
+      const btnWidth = 100;
+      const btnHeight = 50;
+  
+      let x, y, tries = 0;
+  
+      do {
+        x = Math.random() * (containerRect.width - btnWidth);
+        y = Math.random() * (containerRect.height - btnHeight);
+        tries++;
+      } while (
+        x > yesRect.left - containerRect.left - btnWidth &&
+        x < yesRect.right - containerRect.left + btnWidth &&
+        y > yesRect.top - containerRect.top - btnHeight &&
+        y < yesRect.bottom - containerRect.top + btnHeight &&
+        tries < 30
+      );
+  
+      return { x, y };
+    }
+  
+    function moveNoButton() {
+      const pos = getSafeRandomPosition();
+      noBtn.style.left = `${pos.x}px`;
+      noBtn.style.top = `${pos.y}px`;
+      noBtn.style.transform = "translate(0, 0)";
+    }
+  
+    noBtn.addEventListener('mouseenter', moveNoButton);
+    noBtn.addEventListener('touchstart', moveNoButton); // ✅ دعم الشاشات باللمس
+  
+    function yes() {
+      window.location.href = "loading.html";
+    }
+  </script>
+  </body>
+</html>
